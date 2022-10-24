@@ -56,8 +56,13 @@ struct Shader : IShader {
     }
 };
 
+extern void Lesson1(void);
+
 int main(int argc, char** argv) {
     if (2>argc) {
+        Lesson1();
+        std::cout << "Lesson1 save as output_lesson.tga" << std::endl;
+
         std::cerr << "Usage: " << argv[0] << " obj/model.obj" << std::endl;
         return 1;
     }
