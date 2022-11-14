@@ -57,13 +57,30 @@ struct Shader : IShader {
 };
 
 extern void Lesson1(void);
+extern void Lesson2(void);
 
 int main(int argc, char** argv) {
-    if (2>argc) {
-        Lesson1();
-        std::cout << "Lesson1 save as output_lesson.tga" << std::endl;
+    if (2>=argc) {
+        if (argc == 2) {
+            switch (std::atoi(argv[1]))
+            {
+            case 1:
+                Lesson1();
+                break;
+            case 2:
+                Lesson2();
+                break;
+            default:
+                break;
+            }
+            std::cout << "Lesson:" << atoi(argv[1]) << " save as output_lesson.tga" << std::endl;
+        } else {
+            Lesson1();
+            Lesson2();
+            std::cout << "Lesson all save as output_lesson.tga" << std::endl;
+        }
 
-        std::cerr << "Usage: " << argv[0] << " obj/model.obj" << std::endl;
+        // std::cerr << "Usage: " << argv[0] << " obj/model.obj" << std::endl;
         return 1;
     }
     TGAImage framebuffer(width, height, TGAImage::RGB); // the output image
