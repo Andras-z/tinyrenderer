@@ -1,10 +1,11 @@
 #include <vector> 
 #include <iostream> 
+#include "model.h"
 #include "geometry.h"
 #include "tgaimage.h" 
  
-const int width  = 200; 
-const int height = 200; 
+const int width  = 1000; 
+const int height = 1000; 
 
 const TGAColor white = TGAColor(255, 255, 255, 255);
 const TGAColor red   = TGAColor(255, 0,   0,   255);
@@ -161,7 +162,7 @@ void triangle(vec2 *pts, TGAImage &image, TGAColor color)
 }
 
 void Lesson2(void) {
-    TGAImage image(200, 200, TGAImage::RGB);
+    TGAImage image(width, height, TGAImage::RGB);
 
     vec2 t0[3] = {vec2(10, 70),   vec2(50, 160),  vec2(70, 80)};
     vec2 t1[3] = {vec2(180, 50),  vec2(150, 1),   vec2(70, 180)};
@@ -173,9 +174,31 @@ void Lesson2(void) {
 
     // image.write_tga_file("output_lesson2.tga");
 
-    vec2 pts[3] = {vec2(10,10), vec2(100, 30), vec2(190, 160)}; 
-    triangle(pts, image, TGAColor(255, 0, 0)); 
-    image.flip_vertically(); // to place the origin in the bottom left corner of the image 
+    // vec2 pts[3] = {vec2(10,10), vec2(100, 30), vec2(190, 160)}; 
+    // triangle(pts, image, TGAColor(255, 0, 0)); 
+    // image.flip_vertically(); // to place the origin in the bottom left corner of the image 
+    // image.write_tga_file("output_lesson2.tga");
+
+    vec3 light_dir(0, 0, -1); // define light_dir
+
+    Model model("../obj/african_head/african_head.obj");
+    for (int i=0; i<model.nfaces(); i++) {
+        vec2 screen_coords[3];
+        vec3 world_coords[3];
+        for (int j=0; j<3; j++) {
+            vec3 v = model.vert(i, j);
+            screen_coords[j] = vec2((v.x + 1.) * width / 2., (v.y + 1.) * height / 2.);
+            world_coords[j] = v;
+        }
+        vec3 n = cross((world_coords[2]-world_coords[0]), (world_coords[1]-world_coords[0])); 
+        n.normalize();
+        float intensity = n * light_dir;
+        vec2 pts[3] = {screen_coords[0], screen_coords[1], screen_coords[2]};
+
+        if (intensity > 0) {
+            triangle(pts, image, TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
+        }
+    }
     image.write_tga_file("output_lesson2.tga");
     return;
 }
