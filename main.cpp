@@ -59,6 +59,7 @@ struct Shader : IShader {
 extern void Lesson1(void);
 extern void Lesson2(void);
 extern void Lesson3(void);
+extern void Lesson4(void);
 
 int main(int argc, char** argv) {
     if (2>=argc) {
@@ -74,6 +75,8 @@ int main(int argc, char** argv) {
             case 3:
                 Lesson3();
                 break;
+            case 4:
+                Lesson4();
             default:
                 break;
             }
@@ -82,6 +85,7 @@ int main(int argc, char** argv) {
             Lesson1();
             Lesson2();
             Lesson3();
+            Lesson4();
             std::cout << "Lesson all save as output_lesson.tga" << std::endl;
         }
 
